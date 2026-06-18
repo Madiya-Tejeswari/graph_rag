@@ -1,3 +1,12 @@
+---
+title: PG&E GraphRAG
+emoji: ⚡
+colorFrom: blue
+colorTo: yellow
+sdk: docker
+pinned: false
+---
+
 # PG&E GraphRAG Backend
 
 Production-ready hybrid multimodal GraphRAG system for PG&E Greenbook and Tariff documents.
