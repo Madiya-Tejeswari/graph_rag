@@ -55,7 +55,6 @@ Response (with citations)
 1. **Clone and install dependencies:**
 
 ```bash
-cd backend
 pip install -r requirements.txt
 ```
 
@@ -143,6 +142,14 @@ Server runs at `http://localhost:8000`
 
 **API Documentation:** `http://localhost:8000/docs`
 
+### 3. Start Frontend UI
+
+```bash
+streamlit run streamlit_app.py
+```
+
+Frontend UI runs at `http://localhost:8501`
+
 ## API Endpoints
 
 ### Health & Status
@@ -198,6 +205,24 @@ Content-Type: application/json
     "generated_at": "2024-01-15T10:30:00"
   }
 }
+```
+
+## Directory Structure
+
+```text
+graph_rag/
+├── api/                  # FastAPI web server and routes
+├── generation/           # LLM clients and prompt building
+├── ingestion/            # Document parsing, graph building, and entity extraction
+├── retrieval/            # Context building, graph search, and image search
+├── storage/              # Database clients (Neo4j) and image storage
+├── config.py             # System configuration parameters
+├── docker-compose.yml    # Docker services orchestration
+├── Dockerfile            # Application container definition
+├── requirements.txt      # Python dependencies
+├── run_ingestion.py      # Entry point for offline ingestion
+├── streamlit_app.py      # Streamlit frontend app
+└── test_api.py           # API tests
 ```
 
 ## Architecture Details
@@ -345,13 +370,13 @@ pytest tests/ -v
 
 ```bash
 # Format
-black backend/
+black .
 
 # Lint
-flake8 backend/
+flake8 .
 
 # Type check
-mypy backend/
+mypy .
 ```
 
 ## Performance Considerations
@@ -409,12 +434,10 @@ ENABLE_IMAGE_CAPTIONING=false
 FROM python:3.11-slim
 
 WORKDIR /app
-COPY backend/ .
-
-RUN pip install -r requirements.txt
-
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
 EXPOSE 8000
-
 CMD ["python", "-m", "api.main"]
 ```
 
