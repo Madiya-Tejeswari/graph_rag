@@ -54,7 +54,13 @@ context_builder: Optional[ContextBuilder] = None
 prompt_builder: Optional[PromptBuilder] = None
 llm_client: Optional[LLMClient] = None
 
-
+from config import settings
+@app.get("/debug")
+async def debug():
+    return {
+        "groq_exists": bool(settings.groq_api_key),
+        "groq_length": len(settings.groq_api_key)
+    }
 @app.on_event("startup")
 async def startup_event():
     """Initialize connections and load indexes on startup."""
